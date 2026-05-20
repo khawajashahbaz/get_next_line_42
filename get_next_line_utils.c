@@ -6,7 +6,7 @@
 /*   By: mshahbaz <mshahbaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 10:38:47 by mshahbaz          #+#    #+#             */
-/*   Updated: 2026/05/20 12:12:18 by mshahbaz         ###   ########.fr       */
+/*   Updated: 2026/05/20 21:11:25 by mshahbaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-
-char	*ft_strjoin(char const *str1, char const *str2)
+char	*ft_strjoin(char *str1, char const *str2)
 {
 	int		i;
 	int		j;
@@ -85,22 +84,19 @@ char	*ft_strjoin(char const *str1, char const *str2)
 	i = 0;
 	j = 0;
 	if (!str1)
+		str1 = ft_calloc(1, 1);
+	if (!str1 || !str2)
 		return (NULL);
 	str3 = (char *)malloc(
 			(ft_strlen(str1) + ft_strlen(str2) + 1));
 	if (!str3)
-	{
 		return (NULL);
-	}
 	while (str1[i] != '\0')
-	{
 		str3[j++] = str1[i++];
-	}
 	i = 0;
 	while (str2[i] != '\0')
-	{
 		str3[j++] = str2[i++];
-	}
-	str3[j] = 0;
+	str3[j] = '\0';
+	free(str1);
 	return (str3);
 }
