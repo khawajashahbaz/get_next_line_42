@@ -6,7 +6,7 @@
 /*   By: mshahbaz <mshahbaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 10:38:47 by mshahbaz          #+#    #+#             */
-/*   Updated: 2026/05/20 21:11:25 by mshahbaz         ###   ########.fr       */
+/*   Updated: 2026/05/21 11:53:49 by mshahbaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,10 @@ char	*ft_strjoin(char *str1, char const *str2)
 	str3 = (char *)malloc(
 			(ft_strlen(str1) + ft_strlen(str2) + 1));
 	if (!str3)
+	{
+		free(str1);
 		return (NULL);
+	}
 	while (str1[i] != '\0')
 		str3[j++] = str1[i++];
 	i = 0;
