@@ -6,7 +6,7 @@
 /*   By: mshahbaz <mshahbaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 10:38:47 by mshahbaz          #+#    #+#             */
-/*   Updated: 2026/05/21 11:53:49 by mshahbaz         ###   ########.fr       */
+/*   Updated: 2026/05/22 11:11:16 by mshahbaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*ft_strjoin(char *str1, char const *str2)
 	i = 0;
 	j = 0;
 	if (!str1)
-		str1 = ft_calloc(1, 1);
+		str1 = ft_calloc(1, sizeof(char));
 	if (!str1 || !str2)
 		return (NULL);
 	str3 = (char *)malloc(

@@ -6,11 +6,46 @@
 /*   By: mshahbaz <mshahbaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 10:38:52 by mshahbaz          #+#    #+#             */
-/*   Updated: 2026/05/21 13:39:11 by mshahbaz         ###   ########.fr       */
+/*   Updated: 2026/05/22 12:40:40 by mshahbaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_free(char *str1, char *str2)
+{
+	if (str1)
+		free (str1);
+	if (str2)
+		free (str2);
+	return (NULL);
+}
+
+char	*ft_read_file(int fd, char *result)
+{
+	int		data_read;
+	char	*buffer;
+
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	data_read = 1;
+	while (data_read > 0)
+	{
+		data_read = read(fd, buffer, BUFFER_SIZE);
+		if (data_read == -1)
+			return (ft_free(buffer, result));
+		buffer[data_read] = '\0';
+		result = ft_strjoin(result, buffer);
+		if (ft_strchr(result, '\n'))
+			break ;
+	}
+	free(buffer);
+	if (data_read == 0 && (!result || !result[0]))
+	{
+		free(result);
+		return (NULL);
+	}
+	return (result);
+}
 
 char	*ft_get_line(char *buffer)
 {
@@ -54,50 +89,13 @@ char	*ft_next_line(char *buffer)
 	}
 	line = ft_calloc((ft_strlen(buffer) - i), sizeof(char));
 	if (!line)
-	{
-		free(buffer);
-		return (NULL);
-	}
+		return (ft_free(buffer, ""));
 	i++;
 	j = 0;
 	while (buffer[i])
 		line[j++] = buffer[i++];
 	free(buffer);
 	return (line);
-}
-
-char	*ft_read_file(int fd, char *result)
-{
-	int		data_read;
-	char	*buffer;
-	char	*tmp;
-
-	if (!result)
-		result = ft_calloc(1, 1);
-	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	data_read = 1;
-	while (data_read > 0)
-	{
-		data_read = read(fd, buffer, BUFFER_SIZE);
-		if (data_read == -1)
-		{
-			free(buffer);
-			free(result);
-			return (NULL);
-		}
-		buffer[data_read] = '\0';
-		tmp = result;
-		result = ft_strjoin(tmp, buffer);
-		if (ft_strchr(result, '\n'))
-			break ;
-	}
-	free(buffer);
-	if (data_read == 0 && (!result || !result[0]))
-	{
-		free(result);
-		return (NULL);
-	}
-	return (result);
 }
 
 char	*get_next_line(int fd)
