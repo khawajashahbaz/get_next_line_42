@@ -53,7 +53,6 @@ close(fd);
 - [Malloc Tutorial](https://danluu.com/malloc-tutorial/)
 - [Understanding File Descriptors in C](https://www.codequoi.com/en/handling-a-file-by-its-descriptor-in-c/)
 - [Static Variables in C](https://www.geeksforgeeks.org/static-keyword-in-c/)
-- [get_next_line: Rules by 42](https://github.com/OrBin/get_next_line)
 - [Norminette Documentation](https://github.com/42School/norminette)
 - [Official 42 Intranet](https://intra.42.fr/)
 
