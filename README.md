@@ -51,7 +51,7 @@ close(fd);
 - [man 2 read](https://man7.org/linux/man-pages/man2/read.2.html)
 - [42 Subject PDF](https://github.com/42Paris/42subjects)
 - [Malloc Tutorial](https://danluu.com/malloc-tutorial/)
-- [Understanding File Descriptors in C]([https://stackoverflow.com/questions/24222354/](https://www.codequoi.com/en/handling-a-file-by-its-descriptor-in-c/))
+- [Understanding File Descriptors in C](https://www.codequoi.com/en/handling-a-file-by-its-descriptor-in-c/)
 - [Static Variables in C](https://www.geeksforgeeks.org/static-keyword-in-c/)
 - [get_next_line: Rules by 42](https://github.com/OrBin/get_next_line)
 - [Norminette Documentation](https://github.com/42School/norminette)
