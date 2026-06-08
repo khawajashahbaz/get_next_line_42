@@ -104,40 +104,47 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	buffer = ft_read_file (fd, buffer);
 	line = ft_get_line(buffer);
 	buffer = ft_next_line(buffer);
 	return (line);
 }
 
-// int	main(void)
-// {
-// 	int			fd;
-// 	char		*line;
-// 	static char	buffer[BUFFER_SIZE];
-// 	fd = open("text.txt", O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 		printf("FIle couldn't be opened \n");
-// 	}
-// 	else
-// 	{
-// 		printf("File is opened \n");
-// 	}
-// 	// read(fd, buffer, sizeof(buffer) - 1);
-// 	// printf("1st call: %s \n", buffer);
-// 	// read(fd, buffer, sizeof(buffer) - 1);
-// 	// printf("2nd call: %s \n", buffer);
-// 	// read(fd, buffer, sizeof(buffer) - 1);
-// 	// printf("3rd call: %s \n", buffer);
-// 	// read(fd, buffer, sizeof(buffer) - 1);
-// 	// printf("3rd call: %s \n", buffer);
-// 	while ((line = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("Line start : %s", line);
-// 		free(line);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }
+int	main(void)
+{
+	int			fd;
+	char		*line;
+	static char	buffer[BUFFER_SIZE];
+	fd = open("text.txt", O_RDONLY);
+	if (fd == -1)
+	{
+		printf("FIle couldn't be opened \n");
+	}
+	else
+	{
+		printf("File is opened \n");
+	}
+	// read(fd, buffer, sizeof(buffer) - 1);
+	// printf("1st call: %s \n", buffer);
+	// read(fd, buffer, sizeof(buffer) - 1);
+	// printf("2nd call: %s \n", buffer);
+	// read(fd, buffer, sizeof(buffer) - 1);
+	// printf("3rd call: %s \n", buffer);
+	// read(fd, buffer, sizeof(buffer) - 1);
+	// printf("3rd call: %s \n", buffer);
+	line = get_next_line(fd))
+	printf("Line start : %s", line);
+	free(line);
+
+	line = get_next_line(fd))
+	printf("Line start : %s", line);
+	free(line);
+	// Clearing the buffer if we don"t read till end of file 
+	get_next_line(-1);
+	close(fd);
+	return (0);
+}
