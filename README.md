@@ -45,21 +45,76 @@ while ((line = get_next_line(fd)))
 }
 close(fd);
 ```
+#### To better Understand Buffer Function for each call
+> [!CAUTION]
+> If User doesn't want to read till end of File (EOF), User should call get_next_line(-1); before closing fd to properly free the leftover buffer memory. That caused the failure last as Evaluator was taking it Memory leak.
+
+*If you use static char buffer[BUFFER_SIZE + 1]; instead of static char *buffer;, the evaluator is 100% correct: it completely eliminates the "Still Reachable" Valgrind warning when you quit early.*
+
+**Why it defeats Valgrind (Heap vs. BSS Segment)**
+Valgrind only tracks memory that you manually request from the OS while the program is running (which happens when you use malloc, calloc, or ft_strjoin). This memory goes to the Heap. If you don't free the Heap, Valgrind flags it.
+When you declare `static char buffer[BUFFER_SIZE + 1];`, you are not using the Heap. You are telling the compiler to reserve a permanent, fixed block of memory in the BSS Segment of your RAM before the program even starts.
+Because you never malloc'd this buffer, you never have to free() it. When the program quits, the OS just deletes the entire BSS segment automatically. Valgrind stays perfectly quiet!
+###### How the Fixed Array Architecture Works
+Because the array is a fixed size, you can't just keep ft_strjoining text into it infinitely. You have to treat the array like a sliding conveyor belt.
+
+Read Directly: You call ```read(fd, buffer, BUFFER_SIZE)```.
+Extract: You calculate where the \n is, malloc exactly enough memory for the final line, and copy the letters over. 
+> [!NOTE]
+**The 42 subject states:** "Your program must compile with the flag -D BUFFER_SIZE=n." Francinette and Moulinette will rigorously test your code with -D BUFFER_SIZE=10000000 (10 million).
+
+**My Dynamic Approach (char *)**: If the file is only 5 letters long, My code safely reads those 5 letters, mallocs exactly 5 bytes for the stash, and uses almost 0 memory, even though the limit was 10 million. It is highly optimized.
+**The Fixed Size Array's Approach (`char buffer[10000000]`):** When the program boots up, the computer instantly carves out 10 Megabytes of permanent RAM for that static array. Even if the file only has 1 character inside it, that 10MB block of RAM is locked and wasted for the entire lifetime of the program.
+
+```c
+#include <fcntl.h>
+#include <stdio.h>
+int	main(void)
+{
+	int			fd;
+	char		*line;
+	static char	buffer[BUFFER_SIZE];
+	fd = open("text.txt", O_RDONLY);
+	if (fd == -1)
+	{
+		printf("FIle couldn't be opened \n");
+	}
+	else
+	{
+		printf("File is opened \n");
+	}
+	// read(fd, buffer, sizeof(buffer) - 1);
+	// printf("1st call: %s \n", buffer);
+	// read(fd, buffer, sizeof(buffer) - 1);
+	// printf("2nd call: %s \n", buffer);
+	// read(fd, buffer, sizeof(buffer) - 1);
+	// printf("3rd call: %s \n", buffer);
+	// read(fd, buffer, sizeof(buffer) - 1);
+	// printf("3rd call: %s \n", buffer);
+	line = get_next_line(fd);
+	printf("Line start : %s", line);
+	free(line);
+	line = get_next_line(fd);
+	printf("Line start : %s", line);
+	free(line);
+
+	get_next_line(-1);
+	close(fd);
+	return (0);
+}
+```
 
 ## Resources
 
 - [man 2 read](https://man7.org/linux/man-pages/man2/read.2.html)
-- [42 Subject PDF](https://github.com/42Paris/42subjects)
 - [Malloc Tutorial](https://danluu.com/malloc-tutorial/)
 - [Understanding File Descriptors in C](https://www.codequoi.com/en/handling-a-file-by-its-descriptor-in-c/)
 - [Static Variables in C](https://www.geeksforgeeks.org/static-keyword-in-c/)
 - [Norminette Documentation](https://github.com/42School/norminette)
-- [Official 42 Intranet](https://intra.42.fr/)
 
 **AI Usage:**  
 AI was used in this project to assist with documentation structure, README drafting, and formulating explanations of the main algorithm and technical choices. All source code has been written, revised, and tested by the author according to 42’s academic policy.
 
 ## Additional Information
 
-- **Feature list**: Handles any file descriptor, works with any line length, manages memory safely, follows 42 project guidelines.
 - **Technical choices**: Minimal reliance on standard library functions. Custom string manipulation functions implemented as needed for compliance with project rules.
